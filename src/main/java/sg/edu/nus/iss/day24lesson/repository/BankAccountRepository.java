@@ -25,8 +25,8 @@ public class BankAccountRepository {
     private final String DEPOSIT_SQL = "update bank_account set balance = balance + ? where id = ?";
     private final String CREATE_ACCOUNT_SQL = "insert into bank_account (full_name, is_blocked, is_active, account_type, balance) values (?, ?, ?, ?, ?)";
 
-    public BankAccount getBalanceById(int id){
-        return jdbcTemplate.queryForObject(GET_BALANCE_SQL, BankAccount.class, id);
+    public BankAccount getAccountById(int id){
+        return jdbcTemplate.queryForObject(GET_BALANCE_SQL, BeanPropertyRowMapper.newInstance(BankAccount.class), id);
     }
 
     public Boolean withdraw(int id, Float withdrawAmount){
