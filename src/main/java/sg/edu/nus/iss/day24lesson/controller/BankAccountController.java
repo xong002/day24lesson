@@ -5,7 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sg.edu.nus.iss.day24lesson.model.BankAccount;
@@ -19,7 +22,7 @@ public class BankAccountController {
     BankAccountService svc;
 
     @PostMapping("/create")
-    public ResponseEntity<Integer> createAccount(BankAccount bankAccount) {
+    public ResponseEntity<Integer> createAccount(@RequestBody BankAccount bankAccount) {
         Integer createdAccountId = svc.createAccount(bankAccount);
         if (createdAccountId != null) {
             return ResponseEntity.ok().body(createdAccountId);
@@ -35,4 +38,11 @@ public class BankAccountController {
     }
 
 
+    @PutMapping("/transfer")
+    public ResponseEntity<Boolean> transfer(@RequestParam(required = true) int withdrawId, @RequestParam(required = true) int depositId, @RequestParam(required = true) float transferAmount){
+        Boolean result = svc.transfer(withdrawId, depositId, transferAmount);
+        if(result){
+            return ResponseEntity.ok().body(result);
+        } else return ResponseEntity.badRequest().build();
+    } 
 }
